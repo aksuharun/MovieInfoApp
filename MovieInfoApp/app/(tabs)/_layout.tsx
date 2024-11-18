@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons'; // Expo'nun ikonları
+import { Ionicons } from '@expo/vector-icons'; 
  
 export default function TabLayout() {
   return (
@@ -10,9 +10,9 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: Platform.select({
           ios: {
-            position: 'absolute', // iOS için pozisyonu düzenler
+            position: 'absolute', 
           },
-          default: {}, // Diğer platformlar için varsayılan stil
+          default: {},
         }),
       }}
     >
@@ -22,7 +22,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} /> // İkon kullanımı
+            <Ionicons name="home" size={size} color={color} /> 
           ),
         }}
       />

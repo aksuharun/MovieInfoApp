@@ -1,87 +1,54 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
-import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
+import React, { memo } from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { IMovieListProps } from '../types/IMovieListProps';
+import { useMovieListStyles } from '../hooks/useMovieListStyles';
+import MovieCard from './movieCard';
+import MovieListSkeleton from './movieListSkeleton';
+import EmptyState from './emptyState';
 
-interface Movie {
-  id: number;
-  title: string;
-  year: number;
-}
+const MovieList: React.FC<IMovieListProps> = ({
+  title = "Movies",
+  movies = [],
+  isLoading = false,
+  onSeeAllPress,
+  onMoviePress,
+}) => {
+  const styles = useMovieListStyles();
 
-const MovieList = () => {
-  const router = useRouter();
-
-  // Movie data
-  const movies: Movie[] = [
-    { id: 1, title: 'The Matrix', year: 1999 },
-    { id: 2, title: 'Inception', year: 2010 },
-    { id: 3, title: 'The Dark Knight', year: 2008 },
-    { id: 4, title: 'Interstellar', year: 2014 },
-  ];
-
-  const navigateToDetail = (movieId: number) => {
-    router.push({
-      pathname: '/movie/[id]',
-      params: { id: movieId },
-    });
-  };
-
-  let movieName = "Iron Man";
+  if (isLoading) return <MovieListSkeleton />;
+  if (!movies.length) return <EmptyState />;
 
   return (
-    <View className="mb-8 space-y-4">
-      <View className="mx-4 flex-row justify-between items-center">
-        <Text className="text-white text-xl">Movie List</Text>
-        <TouchableOpacity>
-          <Text className='text-lg'>See All</Text>
-        </TouchableOpacity>
+    <View className="mt-4">
+      <View className="flex-row justify-between items-center mx-4 mb-5">
+        <Text className="text-white text-xl font-bold mb-3">{title}</Text>
+        {onSeeAllPress && (
+          <TouchableOpacity onPress={onSeeAllPress}>
+            <Text className="text-blue-400 text-lg">See All</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
-      <ScrollView
+      <FlatList
+        data={movies}
+        keyExtractor={(item) => item.id.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 15 }}>
-
-
-        <FlatList
-          data={movies}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.movieItem}>
-              <Text style={styles.movieTitle}>{item.title} ({item.year})</Text>
-              <Button
-                title="View Details"
-                onPress={() => navigateToDetail(item.id)}
-              />
-
-            </View>
-          )}
-        />
-      </ScrollView>
+        contentContainerStyle={{
+          paddingHorizontal: styles.spacing,
+          gap: styles.spacing
+        }}
+        
+        renderItem={({ item }) => (
+          <MovieCard 
+            movie={item} 
+            onPress={onMoviePress}
+            styles={styles}
+          />
+        )}
+      />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  movieItem: {
-    marginBottom: 15,
-    padding: 10,
-    backgroundColor: '#f4f4f4',
-    borderRadius: 5,
-  },
-  movieTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
-
-export default MovieList;
+export default memo(MovieList);

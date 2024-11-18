@@ -1,109 +1,172 @@
-import React from 'react';
+import React, { useState, useRef, useCallback, memo } from "react";
 import {
   View,
   Text,
-  ScrollView,
-  Image,
+  FlatList,
   Dimensions,
   StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+  ViewStyle,
+} from "react-native";
+import * as Animatable from "react-native-animatable";
+import { IMovie } from "../types/IMovie";
+import MovieCard from "./movieCard";
 
-const { width, height } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-export interface Movie {
-  image: string;
+const ITEM_WIDTH = SCREEN_WIDTH * 0.6;
+const SPACING = 16;
+
+interface TrendingMoviesProps {
+  title?: string;
+  movies: IMovie[];
+  isLoading?: boolean;
+  onSeeAllPress?: () => void;
+  onMoviePress?: (movieId: number) => void;
 }
 
-export interface TrendingMoviesProps {
-  data: Movie[];
-}
-
-export interface MovieCardProps {
-  movie: Movie; 
+interface MovieItemProps {
+  item: IMovie;
   index: number;
-  handleClick: () => void; 
+  movies: IMovie[];
+  activeIndex: number;
+  onMoviePress?: (movieId: number) => void;
 }
- 
-const TrendingMovies: React.FC<TrendingMoviesProps> = ({ data }) => {
-  const handleScroll = (event: any) => {
-    const { contentOffset } = event.nativeEvent;
-  };
-  const handleClick = (index: number) => {
-    console.log(`Movie at index ${index} clicked!`);
-  };
+
+const MovieItem = memo<MovieItemProps>(({ 
+  item, 
+  index, 
+  movies,
+  activeIndex, 
+  onMoviePress 
+}) => {
+  const isActive = index === activeIndex;
+  
+  return (
+    <View
+      style={[
+        styles.posterContainer,
+        {
+          marginLeft: index === 0 ? (SCREEN_WIDTH - ITEM_WIDTH) / 2 : SPACING / 2,
+          marginRight: index === movies.length - 1 
+            ? (SCREEN_WIDTH - ITEM_WIDTH) / 2 
+            : SPACING / 2,
+        },
+      ]}
+    >
+      <Animatable.View
+        animation={isActive ? "pulse" : undefined}
+        key={`${item.id}-${isActive}`}
+        style={{ opacity: isActive ? 1 : 0.5 }}
+      >
+        <MovieCard
+          movie={item}
+          onPress={onMoviePress}
+          styles={{
+            posterWidth: ITEM_WIDTH,
+            posterHeight: ITEM_WIDTH * 1.5,
+            spacing: SPACING,
+          }}
+          showTitle={false}
+        />
+      </Animatable.View>
+    </View>
+  );
+});
+
+const TrendingMovies: React.FC<TrendingMoviesProps> = ({
+  movies = [],
+  isLoading = false,
+  onMoviePress,
+}) => {
+  const [activeIndex, setActiveIndex] = useState(1);
+  const flatListRef = useRef<FlatList>(null);
+
+  const handleMomentumScrollEnd = useCallback((event: any) => {
+    const index = Math.round(
+      event.nativeEvent.contentOffset.x / (ITEM_WIDTH + SPACING)
+    );
+    setActiveIndex(index);
+  }, []);
+
+  const renderItem = useCallback(({ item, index }: { item: IMovie; index: number }) => (
+    <MovieItem 
+      item={item} 
+      index={index} 
+      movies={movies}
+      activeIndex={activeIndex}
+      onMoviePress={onMoviePress}
+    />
+  ), [activeIndex, movies, onMoviePress]);
+
+  const scrollToIndex = useCallback((index: number) => {
+    setActiveIndex(index);
+    flatListRef.current?.scrollToOffset({
+      offset: index * (ITEM_WIDTH + SPACING),
+      animated: true,
+    });
+  }, []);
+
+  if (isLoading || movies.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>
+          {isLoading ? "Loading movies..." : "No trending movies"}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View>
-      <Text className="text-white text-2xl mx-4 mt-6 mb-6">Trending</Text>
-      <ScrollView
+      <View style={styles.header}>
+        <Text style={styles.titleText}>Trending</Text>
+      </View>
+      <FlatList
+        ref={flatListRef}
+        data={movies}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollView}
+        onMomentumScrollEnd={handleMomentumScrollEnd}
+        snapToInterval={ITEM_WIDTH + SPACING}
         decelerationRate="fast"
-        snapToInterval={width * 0.6 + 16}
-        snapToAlignment="start"
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-      >
-        {data?.map((movie, index) => (
-          <MovieCard
-            key={index}
-            movie={movie}
-            index={index}
-            handleClick={() => handleClick(index)}
-          />
-        ))}
-      </ScrollView>
+        initialScrollIndex={1}
+        getItemLayout={(_, index) => ({
+          length: ITEM_WIDTH + SPACING,
+          offset: (ITEM_WIDTH + SPACING) * index,
+          index,
+        })}
+      />
     </View>
   );
 };
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, index, handleClick }) => {
-  return (
-    <TouchableOpacity
-      key={index}
-      activeOpacity={0.9}
-      style={styles.movieCard}
-      onPress={handleClick} // Tıklama olayını burada yönetiyoruz
-    >
-      <Image
-        source={{ uri: movie.image }}
-        style={styles.movieImage}
-        resizeMode="cover"
-        className="rounded-3xl"
-      />
-    </TouchableOpacity>
-  );
-};
-
-
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 24,
-  },
-  titleText: {
-    color: 'white',
-    fontSize: 18, 
-    fontWeight: 'bold',
-    marginLeft: 16,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
     marginBottom: 16,
   },
-  scrollView: {
-    paddingHorizontal: 8, 
-    paddingBottom: 10,
+  titleText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
-  movieCard: {
-    marginRight: 16,
-    borderRadius: 24,
-    overflow: 'hidden',
+  posterContainer: {
+    alignItems: "center",
+    justifyContent: "center",
   },
-  movieImage: {
-    width: width * 0.6,  
-    height: height * 0.4,
-    borderRadius: 24,
-    backgroundColor: '#1F2937',
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  emptyText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 
-export default TrendingMovies;
+export default React.memo(TrendingMovies);

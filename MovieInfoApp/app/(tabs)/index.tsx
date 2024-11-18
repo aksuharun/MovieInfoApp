@@ -1,24 +1,50 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, ScrollView, StatusBar, TouchableOpacity, Platform } from 'react-native';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline';
+import { IMovie } from '@/types/IMovie';
+import { useRouter } from 'expo-router';
+import MovieList from '../../components/movieList';
 import TrendingMovies from '../../components/trendingMovies';
 
 const android = Platform.OS === 'android';
 
-
-const movieData = [
+const SAMPLE_MOVIES: IMovie[] = [
   {
-    image: "https://static.displate.com/280x392/displate/2021-01-28/dc1c9755686a49e6b6d5d8862c3d3b28_a1bca47c459b1b31f0361c9c916e0192.jpg", // Replace with actual image URLs
+    id: 1,
+    title: 'The Matrix',
+    poster: 'https://m.media-amazon.com/images/I/51EG732BV3L._AC_.jpg'
   },
   {
-    image: "https://cdn.marvel.com/content/1x/thorloveandthunder_lob_crd_04.jpg", // Replace with actual image URLs
+    id: 2,
+    title: 'Inception',
+    poster: 'https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SL1500_.jpg'
   },
   {
-    image: "https://static.displate.com/280x392/displate/2021-01-28/dc1c9755686a49e6b6d5d8862c3d3b28_a1bca47c459b1b31f0361c9c916e0192.jpg", // Replace with actual image URLs
+    id: 3,
+    title: 'Thor',
+    poster: 'https://cdn.marvel.com/content/1x/thorloveandthunder_lob_crd_04.jpg'
+  },
+  {
+    id: 4,
+    title: 'Interstellar',
+    poster: 'https://m.media-amazon.com/images/I/81ctHWrzeSL._AC_SL1500_.jpg'
   },
 ];
 
 const HomeScreen = () => {
+
+  const router = useRouter();
+
+  const handleMoviePress = (movieId: number) => {
+    router.push({
+      pathname: '/movie/[id]',
+      params: { id: movieId },
+    });
+  };
+
+  const handleSeeAllPress = () => {
+    router.push('/');
+  };
 
   return (
     <View className="flex-1 bg-neutral-800">
@@ -35,8 +61,20 @@ const HomeScreen = () => {
       </SafeAreaView>
 
       {/* Horizontal ScrollView for the carousel */}
-      <TrendingMovies data={movieData} />
 
+      <TrendingMovies
+        movies={SAMPLE_MOVIES}
+        onMoviePress={handleMoviePress}
+        onSeeAllPress={handleSeeAllPress}
+      />
+
+      <MovieList
+        movies={SAMPLE_MOVIES}
+        onMoviePress={handleMoviePress}
+        onSeeAllPress={handleSeeAllPress}
+      />
+
+  
     </View>
   );
 }

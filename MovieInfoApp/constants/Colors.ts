@@ -19,3 +19,27 @@ export const Colors = {
     tabIconSelected: tintColorDark,
   },
 };
+
+
+export const MOVIE_LIST_STYLES = {
+  POSTER_RATIO: 1.5,
+  POSTER_WIDTH_PERCENTAGE: '40%',  
+  SPACING: 12,
+  MEDIA_QUERIES: {
+    SMALL_SCREEN: '(max-width: 600px)', 
+    MEDIUM_SCREEN: '(max-width: 900px)', 
+  },
+  coverStyle: {
+    width: 150,  // Default width for other movie cards
+    height: 225, // Default height for other movie cards
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  movieTitle: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+};
