@@ -7,7 +7,7 @@ import MovieListSkeleton from './movieListSkeleton';
 import EmptyState from './emptyState';
 
 const MovieList: React.FC<IMovieListProps> = ({
-  title = "Movies",
+  title = "",
   movies = [],
   isLoading = false,
   onSeeAllPress,
@@ -19,7 +19,7 @@ const MovieList: React.FC<IMovieListProps> = ({
   if (!movies.length) return <EmptyState />;
 
   return (
-    <View className="mt-4">
+    <View className="mt-4 mb-6">
       <View className="flex-row justify-between items-center mx-4 mb-5">
         <Text className="text-white text-xl font-bold mb-3">{title}</Text>
         {onSeeAllPress && (

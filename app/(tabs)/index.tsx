@@ -62,19 +62,32 @@ const HomeScreen = () => {
 
       {/* Horizontal ScrollView for the carousel */}
 
-      <TrendingMovies
-        movies={SAMPLE_MOVIES}
-        onMoviePress={handleMoviePress}
-        onSeeAllPress={handleSeeAllPress}
-      />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 10 }}>
 
-      <MovieList
-        movies={SAMPLE_MOVIES}
-        onMoviePress={handleMoviePress}
-        onSeeAllPress={handleSeeAllPress}
-      />
+        <TrendingMovies
+          movies={SAMPLE_MOVIES}
+          onMoviePress={handleMoviePress}
+          onSeeAllPress={handleSeeAllPress}
+        />
 
-  
+        <MovieList
+          movies={SAMPLE_MOVIES}
+          title='Upcoming'
+          onMoviePress={handleMoviePress}
+          onSeeAllPress={handleSeeAllPress}
+        />
+
+        <MovieList
+          movies={SAMPLE_MOVIES}
+          title='Top Rated'
+          onMoviePress={handleMoviePress}
+          onSeeAllPress={handleSeeAllPress}
+        />
+        
+      </ScrollView>
+
     </View>
   );
 }
