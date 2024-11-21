@@ -5,7 +5,9 @@ import { ChevronLeftIcon, HeartIcon } from 'react-native-heroicons/outline';
 import { Stack } from 'expo-router';
 import { HeartIcon as SolidHeartIcon } from 'react-native-heroicons/solid';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import Cast from '../../components/cast';
+import MovieList from '../../components/movieList';
+import { IMovie } from '../../types/IMovie';
 
 interface Movie {
   title: string;
@@ -15,7 +17,28 @@ interface Movie {
 
 const { width, height } = Dimensions.get("window");
 
-
+const SAMPLE_MOVIES: IMovie[] = [
+  {
+    id: 1,
+    title: 'The Matrix',
+    poster: 'https://m.media-amazon.com/images/I/51EG732BV3L._AC_.jpg'
+  },
+  {
+    id: 2,
+    title: 'Inception',
+    poster: 'https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SL1500_.jpg'
+  },
+  {
+    id: 3,
+    title: 'Thor',
+    poster: 'https://cdn.marvel.com/content/1x/thorloveandthunder_lob_crd_04.jpg'
+  },
+  {
+    id: 4,
+    title: 'Interstellar',
+    poster: 'https://m.media-amazon.com/images/I/81ctHWrzeSL._AC_SL1500_.jpg'
+  },
+];
 const movieDetails: { [key: number]: Movie } = {
   1: { title: 'The Matrix', year: 1999, description: 'A hacker learns the truth about the reality he lives in.' },
   2: { title: 'Inception', year: 2010, description: 'A thief who steals corporate secrets using dream-sharing technology is given the inverse task of planting an idea.' },
@@ -23,12 +46,38 @@ const movieDetails: { [key: number]: Movie } = {
   4: { title: 'Interstellar', year: 2014, description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity’s survival.' },
 };
 
+const sampleCast = [
+  {
+    id: 1,
+    name: "Actor 1",
+    profileImage: "https://api.magicfm.ro/resized/articole/2022/03/26/black_widow_marvel.0.jpeg?w=1280&h=&c=",
+    characterName: "Character 1",
+  },
+  {
+    id: 2,
+    name: "Actor 2",
+    profileImage: "https://api.magicfm.ro/resized/articole/2022/03/26/black_widow_marvel.0.jpeg?w=1280&h=&c=",
+    characterName: "Character 2",
+  },
+];
+
 export default function MovieDetailScreen() {
   const { id } = useLocalSearchParams();
   const movieId = Number(id);
   const movie = movieDetails[movieId];
   const router = useRouter();
   const [isFavourite, toggleFavourite] = useState(false);
+
+  const handleMoviePress = (movieId: number) => {
+    router.push({
+      pathname: '/movie/[id]',
+      params: { id: movieId },
+    });
+  };
+
+  const handleSeeAllPress = () => {
+    router.push('/');
+  };
 
   return (
     <>
@@ -89,6 +138,17 @@ export default function MovieDetailScreen() {
           <Text className='text-neutral-400 mx-4 tracking-wide'>
             A team of explorers travel through a wormhole in space in an attempt to ensure humanity’s survival.
           </Text>
+
+
+          <Cast cast={sampleCast} />
+
+          <MovieList
+            movies={SAMPLE_MOVIES}
+            title='Similar movies'
+            onMoviePress={handleMoviePress}
+            onSeeAllPress={handleSeeAllPress}
+          />
+
         </View>
       </ScrollView>
     </>
