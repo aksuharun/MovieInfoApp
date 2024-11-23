@@ -46,6 +46,11 @@ const HomeScreen = () => {
     router.push('/');
   };
 
+  const handleSearchPress = () => {
+    router.push('/movie/search');
+  };
+
+
   return (
     <View className="flex-1 bg-neutral-800">
       <SafeAreaView className={android ? '-mb-2' : 'mb-3'}>
@@ -54,7 +59,7 @@ const HomeScreen = () => {
         {/* Top Bar with Logo and Search Icon */}
         <View className="flex-row items-center justify-between mx-4 py-2 ">
           <Text className="text-white text-3xl mb-7">Logo</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleSearchPress} >
             <MagnifyingGlassIcon size={30} strokeWidth={2} color="white" />
           </TouchableOpacity>
         </View>
