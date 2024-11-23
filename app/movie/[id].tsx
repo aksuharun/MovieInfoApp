@@ -75,6 +75,13 @@ export default function MovieDetailScreen() {
     });
   };
 
+  const handlePersonPress = (personId: number) => {
+    router.push({
+      pathname: '/person/[id]',
+      params: { id: personId },
+    });
+  };
+
   const handleSeeAllPress = () => {
     router.push('/');
   };
@@ -84,7 +91,6 @@ export default function MovieDetailScreen() {
       <ScrollView contentContainerStyle={{ paddingBottom: 20 }} className="flex-1 bg-neutral-900">
         <View className='w-full'>
           <SafeAreaView className='absolute z-20 w-full flex-row flex-row justify-between items-center px-4 pt-3 z-10'>
-            {/* The heart and the come back button */}
             <TouchableOpacity onPress={() => router.back()}>
               <ChevronLeftIcon size={28} strokeWidth={2.5} color={'white'} />
             </TouchableOpacity>
@@ -140,7 +146,7 @@ export default function MovieDetailScreen() {
           </Text>
 
 
-          <Cast cast={sampleCast} />
+          <Cast cast={sampleCast} onPress={handlePersonPress} />
 
           <MovieList
             movies={SAMPLE_MOVIES}
