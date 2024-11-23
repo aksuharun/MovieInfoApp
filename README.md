@@ -20,7 +20,10 @@
 <ul class="mt-2">
   <li>Trending Movies</li>
   <li>Upcoming Movies</li>
+  <li>Top Rated Movies</li>
   <li>View Movie Details</li>
+  <li>View Person Details</li>
+  <li>Movie Cast and Crew Information</li>
   <li>Dark Mode for Better User Experience</li>
 </ul>
 
