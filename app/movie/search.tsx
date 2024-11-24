@@ -33,8 +33,9 @@ export default function SearchScreen() {
   const [iconScale] = useState(new Animated.Value(1));
 
   const handleSearch = () => {
+    const trimmedQuery = searchQuery.trim().toLowerCase();
     const filteredMovies = SAMPLE_MOVIES.filter(movie =>
-      movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+      movie.title.toLowerCase().includes(trimmedQuery)
     );
     setResults(filteredMovies);
   };
@@ -55,18 +56,21 @@ export default function SearchScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: 20 }} className="flex-1 bg-neutral-900">
-      <View className="flex-row items-center justify-center p-4 mt-4 space-x-2 bg-neutral-700 rounded-xl">
+      <View className="flex-row items-center justify-center p-4 mt-4 space-x-2 rounded-xl">
         <View className="relative flex-1">
           <TextInput
             placeholder="Search for movies..."
             placeholderTextColor="#A1A1AA"
             value={searchQuery}
             onChangeText={setSearchQuery}
-            className="text-white py-3 px-4 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="text-white py-3 px-4 rounded-lg w-full"
             style={{
               backgroundColor: 'transparent', 
+              borderWidth: 1,
+              borderColor: '#4B5563', 
               borderRadius: 20,
-              paddingRight: 50,  
+              paddingRight: 50,
+              color: 'white', 
             }}
           />
           
@@ -76,15 +80,36 @@ export default function SearchScreen() {
             onPressOut={handleIconPressOut}
             style={{
               position: 'absolute',
-              right: 12, 
-              top: '50%',
-              transform: [{ translateY: -12 }], 
+              right: 0, 
+              top: 0,
+              bottom: 0,
               justifyContent: 'center',
               alignItems: 'center',
+              backgroundColor: '#4B5563', 
+              borderRadius: 20,
+              aspectRatio: 1,  
+              width: '12%', 
+              maxWidth: 50, 
+              minWidth: 40, 
             }}
           >
-            <Animated.View style={{ transform: [{ scale: iconScale }] }}>
-              <MagnifyingGlassIcon size={20} color="white" />
+            <Animated.View 
+              style={{ 
+                transform: [{ scale: iconScale }],
+                width: '60%', 
+                aspectRatio: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <MagnifyingGlassIcon 
+                size={24} 
+                color="white" 
+                style={{ 
+                  width: '100%', 
+                  height: '100%' 
+                }} 
+              />
             </Animated.View>
           </TouchableOpacity>
         </View>
