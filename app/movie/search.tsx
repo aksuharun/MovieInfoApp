@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Dimensions, Animated } from 'react-native';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline';
+import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
@@ -31,6 +32,7 @@ export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState(SAMPLE_MOVIES);
   const [iconScale] = useState(new Animated.Value(1));
+  const router = useRouter();
 
   const handleSearch = () => {
     const trimmedQuery = searchQuery.trim().toLowerCase();
@@ -52,6 +54,13 @@ export default function SearchScreen() {
       toValue: 1,
       useNativeDriver: true,
     }).start();
+  };
+
+  const handleMoviePress = (movieId: number) => {
+    router.push({
+      pathname: '/movie/[id]',
+      params: { id: movieId },
+    });
   };
 
   return (
@@ -125,7 +134,11 @@ export default function SearchScreen() {
         ) : (
           <View className="flex-row flex-wrap justify-between">
             {results.map((movie, index) => (
-              <View key={movie.id} className={`mb-6 w-1/2 p-2 ${index % 2 === 0 ? 'pl-0' : 'pr-0'}`}>
+              <TouchableOpacity 
+                key={movie.id} 
+                onPress={() => handleMoviePress(movie.id)}
+                className={`mb-6 w-1/2 p-2 ${index % 2 === 0 ? 'pl-0' : 'pr-0'}`}
+              >
                 <Image
                   source={{ uri: movie.poster }}
                   style={{
@@ -136,7 +149,7 @@ export default function SearchScreen() {
                   }}
                 />
                 <Text className="text-white text-center mt-2 font-semibold">{movie.title}</Text>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         )}

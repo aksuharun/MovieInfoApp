@@ -9,7 +9,7 @@ type CastProps = {
         profileImage: string;
         characterName: string;
     }[];
-    onPress?: (personId: number) => void; // İsteğe bağlı onPress özelliği
+    onPress?: (personId: number) => void; 
 };
 
 const Cast: React.FC<CastProps> = ({ cast, onPress }) => {
@@ -17,10 +17,8 @@ const Cast: React.FC<CastProps> = ({ cast, onPress }) => {
 
     const handlePersonPress = (personId: number) => {
         if (onPress) {
-            // Eğer onPress özelliği tanımlıysa, onu çağır
             onPress(personId);
         } else {
-            // Aksi takdirde, varsayılan navigasyonu uygula
             router.push({
                 pathname: '/person/[id]',
                 params: { id: personId },
@@ -34,7 +32,10 @@ const Cast: React.FC<CastProps> = ({ cast, onPress }) => {
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 15 }}
+                contentContainerStyle={{ 
+                    paddingHorizontal: 15,
+                    gap: 16
+                }}
             >
                 {cast &&
                     cast.map((person) => (
@@ -42,6 +43,10 @@ const Cast: React.FC<CastProps> = ({ cast, onPress }) => {
                             key={person.id}
                             className="mr-4 items-center"
                             onPress={() => handlePersonPress(person.id)}
+                            style={{ 
+                                width: 100,
+                                marginRight: 0
+                            }}
                         >
                             <Image
                                 source={{ uri: person.profileImage }}

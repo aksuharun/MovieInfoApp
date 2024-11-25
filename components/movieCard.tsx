@@ -11,38 +11,43 @@ interface MovieCardProps {
     spacing: number;
   };
   showTitle?: boolean;
+
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, onPress, styles, showTitle = true }) => (
-  <TouchableOpacity
-    onPress={() => onPress?.(movie.id)}
-    style={{
-      width: styles.posterWidth,
-      marginRight: styles.spacing
-    }}
-  >
-    <Image
-      source={{ uri: movie.poster }}
+const MovieCard: React.FC<MovieCardProps> = ({ movie, onPress, styles, showTitle = true }) => {
+  const imageUri = movie.imageModel?.url || movie.poster;
+
+  return (
+    <TouchableOpacity
+      onPress={() => onPress?.(Number(movie.id) || 0)}
       style={{
         width: styles.posterWidth,
-        height: styles.posterHeight,
-        borderRadius: 10,
+        marginRight: styles.spacing
       }}
-      resizeMode="cover"
-    />
-    {showTitle && (
-      <Text
-        className="text-white font-semibold text-base"
+    >
+      <Image
+        source={{ uri: imageUri }}
         style={{
-          textAlign: 'center',
-          marginTop: 2
+          width: styles.posterWidth,
+          height: styles.posterHeight,
+          borderRadius: 10,
         }}
-        numberOfLines={1}
-      >
-        {movie.title}
-      </Text>
-    )}
-  </TouchableOpacity>
-);
+        resizeMode="cover"
+      />
+      {showTitle && (
+        <Text
+          className="text-white font-semibold text-base"
+          style={{
+            textAlign: 'center',
+            marginTop: 2
+          }}
+          numberOfLines={1}
+        >
+          {movie.title}
+        </Text>
+      )}
+    </TouchableOpacity>
+  );
+};
 
 export default memo(MovieCard);

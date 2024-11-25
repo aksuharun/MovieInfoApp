@@ -19,22 +19,22 @@ const { width, height } = Dimensions.get("window");
 
 const SAMPLE_MOVIES: IMovie[] = [
   {
-    id: 1,
+    id: "1",
     title: 'The Matrix',
     poster: 'https://m.media-amazon.com/images/I/51EG732BV3L._AC_.jpg'
   },
   {
-    id: 2,
+    id: "2",
     title: 'Inception',
     poster: 'https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SL1500_.jpg'
   },
   {
-    id: 3,
+    id: "3",
     title: 'Thor',
     poster: 'https://cdn.marvel.com/content/1x/thorloveandthunder_lob_crd_04.jpg'
   },
   {
-    id: 4,
+    id: "4",
     title: 'Interstellar',
     poster: 'https://m.media-amazon.com/images/I/81ctHWrzeSL._AC_SL1500_.jpg'
   },
@@ -63,8 +63,18 @@ const sampleCast = [
 
 export default function MovieDetailScreen() {
   const { id } = useLocalSearchParams();
-  const movieId = Number(id);
-  const movie = movieDetails[movieId];
+  const movieId = id as string;
+  const movie = SAMPLE_MOVIES.find(m => m.id === movieId);
+  const movieDetail = movieDetails[Number(movieId)];
+
+  if (!movie || !movieDetail) {
+    return (
+      <View className="flex-1 bg-neutral-900 justify-center items-center">
+        <Text className="text-white text-lg">Movie not found</Text>
+      </View>
+    );
+  }
+
   const router = useRouter();
   const [isFavourite, toggleFavourite] = useState(false);
 
@@ -106,7 +116,7 @@ export default function MovieDetailScreen() {
 
           <View>
             <Image
-              source={{ uri: 'https://m.media-amazon.com/images/I/51EG732BV3L._AC_.jpg' }}
+              source={{ uri: movie.poster }}
               style={{ width, height: height * 0.55 }}
             />
             <LinearGradient
@@ -121,15 +131,15 @@ export default function MovieDetailScreen() {
 
 
         {/* Movie details */}
-        <View style={{ marginTop: -(height * 0.09) }} className='space-y-3'>
+        <View style={{ marginTop: -(height * 0.09) }} className='space-y-6'>
           <Text className='text-white text-center text-3xl font-bold tracking-wider'>
-            Texee
+            {movieDetail.title}
           </Text>
           <Text className='text-neutral-400 font-semibold text-base text-center'>
-            Texee
+            {movieDetail.year}
           </Text>
 
-          <View className='flex-row justify-center mx-4 space-x-6'>
+          <View className='flex-row justify-center mx-4 space-x-6 mb-5'>
             <Text className='text-neutral-400 font-semibold text-base'>
               Action *
             </Text>
@@ -141,12 +151,13 @@ export default function MovieDetailScreen() {
             </Text>
           </View>
 
-          <Text className='text-neutral-400 mx-4 tracking-wide'>
-            A team of explorers travel through a wormhole in space in an attempt to ensure humanity’s survival.
+          <Text className='text-neutral-400 mx-4 mb-4 tracking-wide leading-6'>
+            {movieDetail.description}
           </Text>
 
-
-          <Cast cast={sampleCast} onPress={handlePersonPress} />
+          <View className='mb-4'>
+            <Cast cast={sampleCast} onPress={handlePersonPress} />
+          </View>
 
           <MovieList
             movies={SAMPLE_MOVIES}
