@@ -1,39 +1,111 @@
-<h1 align="center" id="title">Movie Info App</h1>
+# Movie Info App
 
-<p id="description">A mobile app built with React Native, Expo, TypeScript, and Tailwind CSS, allowing you to explore movie information.</p>
+A mobile app built with React Native, Expo, TypeScript, and Tailwind CSS, allowing you to explore movie information.
 
-<h2>🛠️ Upcoming Features</h2>
-<ul class="mt-2">
-  <li>Custom Responsive Slider</li>
-  <li>Browse Movies</li>
-  <li>View Movie Details</li>
-  <li>Movie Cast and Crew Information</li>
-  <li>Add Movies to Favorites</li>
-  <li>Explore Trending Movies</li>
-  <li>Trending Movies</li>
-  <li>Upcoming Movies</li>
-  <li>Top Rated Movies</li>
-  <li>Dark Mode for Better User Experience</li>
-</ul>
+## ✅ Features
+- Trending Movies
+- Upcoming Movies
+- Top Rated Movies
+- View Movie Details
+- View Person Details
+- Movie Cast and Crew Information
+- Dark Mode for Better User Experience
 
-<h2>✅ Existing Features:</h2>
-<ul class="mt-2">
-  <li>Trending Movies</li>
-  <li>Upcoming Movies</li>
-  <li>Top Rated Movies</li>
-  <li>View Movie Details</li>
-  <li>View Person Details</li>
-  <li>Movie Cast and Crew Information</li>
-  <li>Dark Mode for Better User Experience</li>
-</ul>
+## 🛠️ Upcoming Features
+- Custom Responsive Slider
+- Browse Movies
+- View Movie Details
+- Movie Cast and Crew Information
+- Add Movies to Favorites
+- Explore Trending Movies
+- Trending Movies
+- Upcoming Movies
+- Top Rated Movies
+- Dark Mode for Better User Experience
 
-<h2>🙍‍♂️/🙍🏻 For Membership Operations, Additions will be Made:</h2>
-<p class="mt-2">Adding favorite movies</p>
-<p>Browse Movies</p>
-  
-<h2>💻 Technologies and Frameworks used in the project:</h2>
-<p class="mt-2">React Native</p>
-<p>Expo</p>
-<p>TypeScript</p>
-<p>API</p>
-<p>Tailwind CSS</p>
+## 🙍‍♂️/🙍🏻 Membership Operations
+- Adding favorite movies
+- Browse Movies
+
+## 💻 Technologies and Frameworks
+- React Native
+- Expo
+- TypeScript
+- API
+- Tailwind CSS
+
+## 📋 Prerequisites
+- Node.js
+- Expo CLI
+
+### Installing Expo CLI
+To install Expo CLI, run the following command:
+```bash
+npm install -g expo-cli
+```
+
+## 🚀 Getting Started
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd movie-info-app
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the App
+- Start the development server:
+  ```bash
+  npm start
+  ```
+- Run on Android:
+  ```bash
+  npm run android
+  ```
+- Run on iOS:
+  ```bash
+  npm run ios
+  ```
+- Run on Web:
+  ```bash
+  npm run web
+  ```
+
+## 🧪 Testing
+- Run tests:
+  ```bash
+  npm test
+  ```
+
+## 🌟 Contributing
+Contributions are welcome! Please fork the repository and submit a pull request for any improvements.
+
+## 📄 License
+MIT License
+
+Copyright (c) 2024 Yunus Emre Koçak
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
