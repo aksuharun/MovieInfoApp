@@ -1,5 +1,11 @@
 export interface IMovie {
-    id: number;
-    title: string;
-    poster: string;
-  }
+  id: string;
+  title: string;
+  poster: string;
+  imageModel?: {
+    caption?: string;
+    url?: string;
+    maxHeight?: number;
+    maxWidth?: number;
+  };
+}
